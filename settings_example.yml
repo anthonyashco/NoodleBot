@@ -1,0 +1,12 @@
+# Don't forget to rename this file to settings.yml!
+
+noodle:
+  excluded_cogs:
+  external_cogs:
+  optional_cogs:
+  owners:
+  trigger:
+mongo_connect:
+  host:
+  port:
+  db:
