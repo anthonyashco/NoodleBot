@@ -8,7 +8,7 @@ class Meme(Cog):
     def __init__(self, bot: Bot):
         self.bot = bot
 
-    @command(aliases=["iseven"])
+    @command(aliases=["iseven", "isss_even", "issseven"])
     @guild_only()
     async def is_even(self, ctx: Context, query: int):
         """Check if integer is even using isevenapi"""
