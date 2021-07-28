@@ -1,11 +1,11 @@
 # Don't forget to rename this file to settings.yml!
 
 noodle:
-  excluded_cogs:
-  external_cogs:
-  optional_cogs:
-  owners:
-  trigger:
+  excluded_cogs: # a list of cog names from the cogs/ folder to exclude.
+  external_cogs: # a list of paths to other cogs to include.
+  optional_cogs: # a list of cog names from the cogs_optional/ folder to include.
+  owners: # a list of Discord UUIDs for the owner or owners of the bot.
+  trigger: # the prefix that invokes the bot.
 mongo_connect:
   host:
   port:
