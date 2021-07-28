@@ -1,6 +1,5 @@
-from discord import Color, Embed
 from discord.ext.commands import Bot, Cog, Context, command, guild_only
-from helpers.snek import snekkify
+from helpers.basics import say
 from is_even import is_even
 
 
@@ -16,13 +15,12 @@ class Meme(Cog):
         try:
             ie = is_even.is_even(int(query))
             if ie:
-                description = f"{query} is even."
+                message = f"{query} is even."
             else:
-                description = f"{query} is not even."
+                message = f"{query} is not even."
         except Exception as e:
-            description = str(e)
-        embed = Embed(description=snekkify(description), color=Color.orange())
-        await ctx.channel.send(embed=embed)
+            message = str(e)
+        await say(ctx.channel, message)
 
 
 def setup(bot: Bot):

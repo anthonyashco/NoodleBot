@@ -1,7 +1,6 @@
-from discord import Color, Embed
 from discord.ext.commands import Bot, Cog, Context, command, guild_only
 from discord.ext.commands.errors import MissingRequiredArgument
-from helpers.snek import snekkify
+from helpers.basics import say
 
 
 class Hello(Cog):
@@ -13,21 +12,19 @@ class Hello(Cog):
     @guild_only()
     async def hello(self, ctx: Context):
         """Noodle says hello!"""
-        embed = Embed(description=snekkify("Salutations"), color=Color.orange())
-        await ctx.channel.send(embed=embed)
+        await say(ctx.channel, "Salutations")
 
     @command()
     @guild_only()
     async def say(self, ctx: Context, *, message: str):
         """Noodle repeats a message."""
         await ctx.message.delete()
-        embed = Embed(description=snekkify(message), color=Color.orange())
-        await ctx.channel.send(embed=embed)
+        await say(ctx.channel, message)
 
     @say.error
     async def say_error(self, ctx: Context, e: Exception):
         if isinstance(e, MissingRequiredArgument):
-            await ctx.channel.send()
+            await say(ctx.channel, "You should tell me what to say.")
 
 
 def setup(bot: Bot):
