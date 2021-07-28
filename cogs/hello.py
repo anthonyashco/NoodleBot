@@ -1,30 +1,34 @@
 from discord import Color, Embed
-from discord.ext.commands import Cog, command, guild_only
-import re
+from discord.ext.commands import Bot, Cog, Context, command, guild_only
+from discord.ext.commands.errors import MissingRequiredArgument
+from helpers.snek import snekkify
 
 
 class Hello(Cog):
 
-    def __init__(self, bot):
+    def __init__(self, bot: Bot):
         self.bot = bot
 
     @command()
     @guild_only()
-    async def hello(self, ctx):
+    async def hello(self, ctx: Context):
         """Noodle says hello!"""
-        embed = Embed(description="Sssalutationsss.", color=Color.orange())
+        embed = Embed(description=snekkify("Salutations"), color=Color.orange())
         await ctx.channel.send(embed=embed)
 
     @command()
     @guild_only()
-    async def say(self, ctx, *, message: str):
+    async def say(self, ctx: Context, *, message: str):
         """Noodle repeats a message."""
         await ctx.message.delete()
-        messsage = re.sub(r"(ss|s)", "sss", message)
-        messsage = re.sub(r"(Ss|S)", "Sss", messsage)
-        embed = Embed(description=messsage, color=Color.orange())
+        embed = Embed(description=snekkify(message), color=Color.orange())
         await ctx.channel.send(embed=embed)
 
+    @say.error
+    async def say_error(self, ctx: Context, e: Exception):
+        if isinstance(e, MissingRequiredArgument):
+            await ctx.channel.send()
 
-def setup(bot):
+
+def setup(bot: Bot):
     bot.add_cog(Hello(bot))
