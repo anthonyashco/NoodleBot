@@ -1,3 +1,4 @@
+from discord import Activity, ActivityType
 from discord.ext.commands import Bot
 from typing import Dict, List
 import discord
@@ -94,6 +95,7 @@ def instantiate_bot(settings: Dict) -> Bot:
         return intents
 
     bot = Bot(
+        activity=Activity(name="~help", type=ActivityType.listening),
         command_prefix=settings["trigger"],
         case_insensitive=True,
         intents=set_intents(),
