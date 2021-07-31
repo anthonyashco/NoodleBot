@@ -3,6 +3,11 @@
 settings.yml
 token.yml
 
+# Data Files
+
+data/pokemon*.txt
+data/swears*.txt
+
 # IDE Files
 
 .venv/
