@@ -57,18 +57,21 @@ class Meme(Cog):
             else:
                 return word
 
-        try:
-            text = re.sub(r"\b\w*\b", replace, message.content, flags=re.I)
-            if message.content != text:
-                await message.delete()
-                author = message.author
-                embed = Embed(description=snekkify(text), color=Color.orange())
-                embed.set_author(
-                    name=f"{author.display_name} ({message.author})",
-                    icon_url=author.avatar_url)
-                await message.channel.send(embed=embed)
-        except NotFound:
-            print("Message not found.")
+        # TODO: Export to check.
+        if message.channel.name == "bot-spam":
+            try:
+                text = re.sub(r"\b\w*\b", replace, message.content, flags=re.I)
+                if message.content != text:
+                    await message.delete()
+                    author = message.author
+                    embed = Embed(description=snekkify(text),
+                                  color=Color.orange())
+                    embed.set_author(
+                        name=f"{author.display_name} ({message.author})",
+                        icon_url=author.avatar_url)
+                    await message.channel.send(embed=embed)
+            except NotFound:
+                print("Message not found.")
 
 
 def setup(bot: Bot):
