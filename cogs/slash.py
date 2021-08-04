@@ -12,3 +12,7 @@ class Slash(Cog):
     @cog_slash(name="ping")
     async def ping(self, ctx: SlashContext):
         await say(ctx.channel, f"Pong! ({self.bot.latency*1000}ms)")
+
+
+def setup(bot: Bot):
+    bot.add_cog(Slash(bot))
