@@ -1,8 +1,10 @@
+from discord_slash import SlashCommand
 from helpers import startup
 
 if __name__ == "__main__":
     settings = startup.get_settings("noodle")
     bot = startup.instantiate_bot(settings)
+    slash = SlashCommand(bot, sync_commands=True)
 
     extensions = startup.get_extensions(settings["optional_cogs"],
                                         settings["excluded_cogs"],
