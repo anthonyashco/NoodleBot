@@ -1,6 +1,8 @@
 from discord import Activity, ActivityType, Color, Embed, TextChannel
 from discord.ext.commands import Bot
+from discord_slash import SlashContext
 from helpers.snek import snekkify
+from typing import Union
 
 
 async def playing(bot: Bot, type: str, phrase: str):
@@ -14,6 +16,13 @@ async def playing(bot: Bot, type: str, phrase: str):
     await bot.change_presence(activity=activity)
 
 
-async def say(channel: TextChannel, message: str):
+async def say(ctx: Union[TextChannel, SlashContext],
+              message: str,
+              hidden: bool = False):
     embed = Embed(description=snekkify(message), color=Color.orange())
-    await channel.send(embed=embed)
+    if type(ctx) == SlashContext:
+        await ctx.send(embed=embed, hidden=hidden)
+    elif type(ctx) == TextChannel:
+        await ctx.send(embed=embed)
+    else:
+        raise TypeError

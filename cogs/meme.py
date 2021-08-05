@@ -1,11 +1,18 @@
+from __main__ import settings
 from discord import Color, Embed
 from discord.errors import NotFound
-from discord.ext.commands import Bot, Cog, Context, command, guild_only
+from discord.ext.commands import Bot, Cog
+from discord_slash import SlashContext as ctx
+from discord_slash.cog_ext import cog_slash
+from discord_slash.model import SlashCommandOptionType as opt
+from discord_slash.utils.manage_commands import create_option
 from helpers.basics import say
 from helpers.snek import snekkify
 import random
 import re
 import requests
+
+guild_ids = settings["slash"]["guilds"]
 
 
 def text_loader(file_path: str):
@@ -28,10 +35,13 @@ class Meme(Cog):
         self.swears = text_loader("data/swears_full.txt")
         self.pokemon = text_loader("data/pokemon_names.txt")
 
-    @command(aliases=["iseven", "isss_even", "issseven"])
-    @guild_only()
-    async def is_even(self, ctx: Context, query: int):
-        """Check if integer is even using isevenapi"""
+    @cog_slash(guild_ids=guild_ids,
+               options=[
+                   create_option("query", "The integer to query", opt.INTEGER,
+                                 True)
+               ])
+    async def is_even(self, ctx: ctx, query: int):
+        """Check if an integer is even using isevenapi."""
         try:
             r = requests.get(
                 url=f"https://api.isevenapi.xyz/api/iseven/{query}/")
@@ -44,10 +54,9 @@ class Meme(Cog):
             message = ie["error"]
         except Exception as e:
             message = str(e)
-        await say(ctx.channel, message)
+        await say(ctx, message)
 
     @listener("on_message")
-    @guild_only()
     async def poke_swears(self, message):
 
         def replace(match):
