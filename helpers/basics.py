@@ -2,7 +2,7 @@ from discord import Activity, ActivityType, Color, Embed, TextChannel
 from discord.ext.commands import Bot
 from discord_slash import SlashContext
 from helpers.snek import snekkify
-from typing import Union
+from typing import List, Union
 
 
 async def playing(bot: Bot, type: str, phrase: str):
@@ -18,10 +18,11 @@ async def playing(bot: Bot, type: str, phrase: str):
 
 async def say(ctx: Union[TextChannel, SlashContext],
               message: str,
+              components: List[dict] = None,
               hidden: bool = False):
     embed = Embed(description=snekkify(message), color=Color.orange())
     if type(ctx) == SlashContext:
-        await ctx.send(embed=embed, hidden=hidden)
+        await ctx.send(embed=embed, components=components, hidden=hidden)
     elif type(ctx) == TextChannel:
         await ctx.send(embed=embed)
     else:
