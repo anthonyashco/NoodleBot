@@ -3,6 +3,7 @@ from helpers import startup
 
 if __name__ == "__main__":
     settings = startup.get_settings("noodle")
+    connect = startup.get_settings("mongo_connect")
     bot = startup.instantiate_bot(settings)
     slash = SlashCommand(bot, sync_commands=True)
 
