@@ -1,9 +1,10 @@
 from __main__ import settings
+from discord import Color, Embed
 from discord.ext.commands import Bot, Cog
 from discord_slash import SlashContext as ctx, ComponentContext as cctx
 from discord_slash.cog_ext import cog_slash
 from discord_slash.model import ButtonStyle
-from discord_slash.utils.manage_components import create_actionrow, create_button, create_select, create_select_option, wait_for_component
+from discord_slash.utils.manage_components import create_actionrow, create_button, create_select, create_select_option
 from helpers.basics import say
 from helpers.snek import snekkify
 
@@ -19,6 +20,7 @@ class Component(Cog):
 
     @cog_slash(guild_ids=guild_ids)
     async def buttons(self, ctx: ctx):
+        """Want some buttons? We've got buttons."""
         buttons = [
             create_button(style=ButtonStyle.red,
                           label="A Red Button",
@@ -32,20 +34,24 @@ class Component(Cog):
         ]
         action_row = create_actionrow(*buttons)
 
-        await ctx.send(snekkify("You press the button?"),
-                       components=[action_row])
+        await say(ctx, "You press the button?", components=[action_row])
 
     @listener("on_component")
     async def buttons_listener(self, ctx: cctx):
+        embed = Embed(color=Color.orange())
         if ctx.custom_id == "red":
-            await ctx.edit_origin(content=snekkify("Outstanding! Red button!"))
+            embed.description = snekkify("Outstanding! Red button!")
+            await ctx.edit_origin(embed=embed)
         elif ctx.custom_id == "green":
-            await ctx.edit_origin(content=snekkify("Wow! Green button!"))
+            embed.description = snekkify("Wow! Green button!")
+            await ctx.edit_origin(embed=embed)
         elif ctx.custom_id == "blue":
-            await ctx.edit_origin(content=snekkify("Sublime! Blue button!"))
+            embed.description = snekkify("Sublime! Blue button!")
+            await ctx.edit_origin(embed=embed)
 
     @cog_slash(guild_ids=guild_ids)
     async def selects(self, ctx: ctx):
+        """Selections? We have selections."""
         select = create_select(
             options=[
                 create_select_option("Lab Coat", value="coat", emoji="🥼"),
@@ -58,14 +64,15 @@ class Component(Cog):
             custom_id="science",
         )
 
-        await ctx.send(snekkify("Science?"),
-                       components=[create_actionrow(select)])
+        await say(ctx, "Science?", components=[create_actionrow(select)])
 
     @listener("on_component")
     async def selects_listener(self, ctx: cctx):
+        embed = Embed(color=Color.orange())
         if ctx.custom_id == "science":
-            await ctx.edit_origin(
-                content=snekkify(f"Wow, {' and '.join(ctx.selected_options)}!"))
+            embed.description = snekkify(
+                f"Wow, {' and '.join(ctx.selected_options)}!")
+            await ctx.edit_origin(embed=embed)
 
 
 def setup(bot: Bot):
