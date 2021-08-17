@@ -17,6 +17,7 @@ base_permissions = {}
 
 for guild in guild_ids:
     base_permissions[guild] = []
+    base_permissions[guild].append(create_permission(guild, perm.ROLE, False))
     for owner in owners:
         base_permissions[guild].append(create_permission(
             owner, perm.USER, True))
