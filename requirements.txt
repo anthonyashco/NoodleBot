@@ -1,3 +1,4 @@
 discord.py
 discord-py-slash-command
 motor
+pyyaml
